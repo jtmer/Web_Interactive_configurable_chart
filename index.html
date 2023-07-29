@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <title>可交互可配置图表</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" href="index.css">
+    <!-- <script src="jquery.js"></script>       必须位于js列表的第一个！ -->
+</head>
+
+<body>
+    <div id="main_board">
+
+        <aside id="aside" class="config_panel">
+            <div class="config_panel_choice">
+                <button class="data_button">数据上传</button>
+                <button class="config_button">配置选择</button>
+            </div>
+
+            <div class="side_content">
+                <div class="data_sidebar">
+                    <div id="data_txt" class="section"> <!--txt文件导入样式-->
+                        <div id="data_txt_title" class="aside_title">
+                            <div id="data_txt_arrow" class="list_arrow"></div>
+                            <p id="data_txt_title_text" class="aside_title_text">txt文件导入</p>
+                        </div>
+                        <div id="data_txt_detail" class="aside_detail">
+                            <button id="txt_button">上传文件</button>
+                        </div>
+                    </div>
+                    <div id="data_manual_input" class="section"> <!--手动输入样式-->
+                        <div id="data_manual_input_title" class="aside_title">
+                            <div id="data_manual_input_arrow" class="list_arrow"></div>
+                            <p id="data_manual_input_title_text" class="aside_title_text">手动输入</p>
+                        </div>
+                        <div id="data_manual_input_detail" class="aside_detail">
+                            <label for="data_input">在此输入年份和产量：</label>
+                            <textarea rows="15" cols="20" id="data_input"
+                                placeholder="(2019,2)(2020,3)(2021,5)"></textarea>
+                            <button id="text_input_button" onclick="addData()">确定添加</button>
+                        </div>
+                    </div>
+                    <div id="data_interaction" class="section">
+                        <div id="data_interaction_title" class="aside_title">
+                            <div id="data_interaction_arrow" class="list_arrow"></div>
+                            <p id="data_interaction_text" class="aside_title_text">数据筛选</p>
+                        </div>
+                        <div id="chart_show_detail" class="aside_detail">
+                            <label for="year_retain">填写年份数据区间：&emsp;&emsp;</label>
+                            <input type="text" id="year_retain" placeholder="[2001,2023][1949,1979]">
+                            <br>
+                            <label for="yield_retain">填写产量数据区间：&emsp;&emsp;</label>
+                            <input type="text" id="yield_retain" placeholder="[3,5][7,9]">
+                            <br>
+                            <br>
+                            <button id="retain_button" onclick="filterData();">确认筛选</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="config_sidebar">
+                    <div id="list_histogram" class="section"> <!--柱状图样式-->
+                        <div id="list_histogram_title" class="aside_title">
+                            <div id="list_histogram_arrow" class="list_arrow"></div>
+                            <p id="list_histogram_text" class="aside_title_text">柱状图</p>
+                        </div>
+                        <div id="list_histogram_detail" class="aside_detail">
+                            <label for="bar_color1">填充颜色1：</label>
+                            <input type="color" id="bar_color1" value="#5B8FF9" class="bar_color_class">
+                            <br>
+                            <label for="bar_color2">填充颜色2：</label>
+                            <input type="color" id="bar_color2" value="#5B8FF9" class="bar_color_class">
+                            <br>
+                            <label for="bar_pattern">填充样式：&ensp;</label>
+                            <select id="bar_pattern" class="aside_detail_select">
+                                <option value="solid">实心填充</option>
+                                <option value="diagonal">斜线填充</option>
+                                <option value="shadow">阴影填充</option>
+                            </select>
+                            <br>
+                            <label for="bar_gradient">渐变控制：&ensp;</label>
+                            <input type="range" id="bar_gradient" min="0" max="100" value="0" class="input_range">
+                        </div>
+                    </div>
+
+                    <div id="list_linechart" class="section"> <!--折线图样式-->
+                        <div id="list_linechart_title" class="aside_title">
+                            <div id="list_linechart_arrow" class="list_arrow"></div>
+                            <p id="list_linechart_text" class="aside_title_text">折线图</p>
+                        </div>
+                        <div id="list_linechart_detail" class="aside_detail">
+                            <label for="line_color">线颜色：&emsp;</label>
+                            <input type="color" id="line_color" value="#5AD8A6" class="bar_color_class">
+                            <br>
+                            <label for="line_style">线样式：&emsp;</label>
+                            <select id="line_style" class="aside_detail_select">
+                                <option value="solid">实线</option>
+                                <option value="dashed">虚线</option>
+                                <option value="dotted">点线</option>
+                            </select>
+                            <br>
+                            <label for="line_width">线粗细：&emsp;</label>
+                            <input type="range" id="line_width" min="1" max="10" value="1" class="input_range">
+                            <div id="separation"></div>
+                            <label for="line_point_color">点颜色：&emsp;</label>
+                            <input type="color" id="line_point_color" value="#5AD8A6" class="bar_color_class">
+                            <br>
+                            <label for="line_point_shape">点形状：&emsp;</label>
+                            <select id="line_point_shape_style" class="aside_detail_select">
+                                <option value="triangle">三角形</option>
+                                <option value="square">正方形</option>
+                                <option value="circle">圆形</option>
+                            </select>
+                            <br>
+                            <label for="line_point_size">点大小：&emsp;</label>
+                            <input type="range" id="line_point_size" min="1" max="10" value="5" class="input_range">
+                        </div>
+                    </div>
+
+                    <div id="list_font" class="section"> <!--字体样式-->
+                        <div id="list_font_title" class="aside_title">
+                            <div id="list_font_arrow" class="list_arrow"></div>
+                            <p id="list_font_text" class="aside_title_text">字体样式</p>
+                        </div>
+                        <div id="list_font_detail" class="aside_detail">
+                            <label for="text_color">字体颜色：</label>
+                            <input type="color" id="text_color" class="bar_color_class">
+                            <br>
+                            <label for="text_font">字体：&emsp;&emsp;</label>
+                            <select id="text_font" class="aside_detail_select">
+                                <option value="Arial">Arial</option>
+                                <option value="Avenir">Avenir</option>
+                                <option value="Times New Roman">Times New Roman</option>
+                            </select>
+                            <br>
+                            <label for="text_size">字号：&emsp;&emsp;</label>
+                            <input type="range" id="text_size" min="8" max="24" value="12" class="input_range">
+                        </div>
+                    </div>
+
+                    <div id="chart_show" class="section">
+                        <div id="chart_show_title" class="aside_title">
+                            <div id="chart_show_arrow" class="list_arrow"></div>
+                            <p id="chart_show_text" class="aside_title_text">图表显示</p>
+                        </div>
+                        <div id="chart_show_detail" class="aside_detail">
+                            <label for="chart_invisibility">柱状图表隐藏：</label>
+                            <input type="checkbox" id="bar_chart_invisibility">
+                            <br>
+                            <label for="chart_invisibility">折线图表隐藏：</label>
+                            <input type="checkbox" id="line_chart_invisibility">
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </aside>
+        <div class="chart_container">
+            <!-- <canvas id="chartCanvas" width="800" height="500"></canvas> -->
+            <canvas id="chartCanvas" width="2400" height="1500"></canvas>
+        </div>
+    </div>
+    <script src="index.js"></script>
+</body>
+
+</html>
